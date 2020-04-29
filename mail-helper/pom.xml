@@ -1,0 +1,49 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.yferhaoui.mail.helper</groupId>
+	<artifactId>mail-helper</artifactId>
+	<version>1.0</version>
+	<packaging>jar</packaging>
+
+	<name>mail-helper</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+
+		<!-- https://mvnrepository.com/artifact/org.simplejavamail/simple-java-mail -->
+		<dependency>
+			<groupId>org.simplejavamail</groupId>
+			<artifactId>simple-java-mail</artifactId>
+			<version>6.0.3</version>
+		</dependency>
+
+		<!-- Helpers -->
+		<dependency>
+			<groupId>com.yferhaoui.basic.helper</groupId>
+			<artifactId>basic-helper</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.yferhaoui.logger.helper</groupId>
+			<artifactId>logger-helper</artifactId>
+			<version>1.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.yferhaoui.proxy.helper</groupId>
+			<artifactId>proxy-helper</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+	</dependencies>
+</project>

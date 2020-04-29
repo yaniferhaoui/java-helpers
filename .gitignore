@@ -1,0 +1,17 @@
+*.git
+*.class
+*.classpath
+*.project
+*.settings
+*.metadata
+*.cache
+*.log
+*Datas
+*Graphs
+*target
+*.jpg
+*.png
+*.db
+*.ck
+*output
+*transf.zip
