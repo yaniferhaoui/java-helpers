@@ -77,7 +77,7 @@ public final class LoggerHelper {
 						.withImmediateFlush(true)//
 						.withPolicy(CompositeTriggeringPolicy.createPolicy(//
 								OnStartupTriggeringPolicy.createPolicy(1L), //
-								SizeBasedTriggeringPolicy.createPolicy("100000")))//
+								SizeBasedTriggeringPolicy.createPolicy("20000000")))// 20 Mo
 						.withStrategy(DefaultRolloverStrategy.newBuilder()//
 								.withMax(String.valueOf(appender.max))//
 								.withMin(String.valueOf(appender.min))//

@@ -3,6 +3,7 @@ package com.yferhaoui.basic.helper;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -10,6 +11,8 @@ public final class TimeHelper {
 
 	public final static ZoneId ZONE_ID = ZoneId.of("Europe/Paris");
 
+	public final static long MS_PER_YEAR = 31556952000L;
+	public final static long MS_PER_MONTH = 2629746000L;
 	public final static long MS_PER_WEEK = 604800000;
 	public final static long MS_PER_DAY = 86400000;
 	public final static long MS_PER_HOUR = 3600000;
@@ -27,7 +30,7 @@ public final class TimeHelper {
 		}
 	}
 
-	public final static String getValidKeyHexa() {
+	public final static String getValidHexaKey() {
 		return Long.toHexString(getValidKey());
 	}
 
@@ -35,6 +38,13 @@ public final class TimeHelper {
 		if (theDate != null) {
 			return Instant.ofEpochMilli(theDate).atZone(ZONE_ID).toLocalDateTime()
 					.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		}
+		return null;
+	}
+	
+	public final static String getCalendarString(final Calendar theDate) {
+		if (theDate != null) {
+			return TimeHelper.getDateString(theDate.getTimeInMillis());
 		}
 		return null;
 	}
@@ -50,6 +60,13 @@ public final class TimeHelper {
 		if (theDate != null) {
 			return Instant.ofEpochMilli(theDate).atZone(ZONE_ID).toLocalDateTime()
 					.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		}
+		return null;
+	}
+	
+	public final static String getJustCalendarString(final Calendar theDate) {
+		if (theDate != null) {
+			return TimeHelper.getJustDateString(theDate.getTimeInMillis());
 		}
 		return null;
 	}

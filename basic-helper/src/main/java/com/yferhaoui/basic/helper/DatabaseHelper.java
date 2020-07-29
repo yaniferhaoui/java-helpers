@@ -15,10 +15,9 @@ import org.apache.ibatis.jdbc.ScriptRunner;
 
 public final class DatabaseHelper {
 
-	
 	// Execute sql script
-	public final static void executeScript(final String scriptName, final Connection connection)
-			throws UnsupportedEncodingException {
+	public final static void executeScript(final String scriptName, //
+			final Connection connection) throws UnsupportedEncodingException {
 
 		final PrintStream tmp = new PrintStream(new OutputStream() {
 			@Override

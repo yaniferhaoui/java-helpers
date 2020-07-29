@@ -1,10 +1,14 @@
+*.properties
 *.git
 *.class
 *.classpath
 *.project
+*.setting
 *.settings
 *.metadata
 *.cache
+*.data
+*.datas
 *.log
 *Datas
 *Graphs
@@ -14,4 +18,3 @@
 *.db
 *.ck
 *output
-*transf.zip

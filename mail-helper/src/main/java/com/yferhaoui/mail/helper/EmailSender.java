@@ -38,16 +38,16 @@ public class EmailSender {
 			this.transportStrategy = transportStrategy;
 		}
 
-		public final boolean senderEmailShowedMustBeTrust() {
+		public final boolean senderFakeEmailMustBeTrust() {
 			return this.equals(OUTLOOK) || this.equals(LAPOSTE) || this.equals(GMX) || this.equals(MAIL_COM);
 		}
 	}
 
 	// Sender
-	private final String emailSender;
-	private final String passwordSender;
-	private final String nameSenderShowed;
-	private final String emailSenderShowed;
+	private final String senderEmail;
+	private final String senderPassword;
+	private final String senderFakeName;
+	private final String senderFakeEmail;
 
 	// Recipient
 	private final String recipientEmail;
@@ -59,48 +59,48 @@ public class EmailSender {
 	private final Proxy proxy;
 	private final ProxyAccount proxyAccount;
 
-	public EmailSender(final String emailSender, //
-			final String passwordSender, //
-			final String nameSenderShowed, //
-			final String emailSenderShowed, //
+	public EmailSender(final String senderEmail, //
+			final String senderPassword, //
+			final String senderFakeName, //
+			final String senderFakeEmail, //
 			final String recipientEmail, //
 			final SMTPServer smtpServer, //
 			final Proxy proxy, //
 			final ProxyAccount proxyAccount) {
 
-		this.emailSender = emailSender;
-		this.passwordSender = passwordSender;
-		this.nameSenderShowed = nameSenderShowed;
-		this.emailSenderShowed = emailSenderShowed;
+		this.senderEmail = senderEmail;
+		this.senderPassword = senderPassword;
+		this.senderFakeName = senderFakeName;
+		this.senderFakeEmail = senderFakeEmail;
 		this.recipientEmail = recipientEmail;
 		this.smtpServer = smtpServer;
 		this.proxy = proxy;
 		this.proxyAccount = proxyAccount;
 	}
 
-	public EmailSender(final String emailSender, //
-			final String passwordSender, //
-			final String nameSenderShowed, //
-			final String emailSenderShowed, //
+	public EmailSender(final String senderEmail, //
+			final String senderPassword, //
+			final String senderFakeName, //
+			final String senderFakeEmail, //
 			final String recipientEmail, //
 			final SMTPServer smtpServer, final Proxy proxy) {
-		this(emailSender, passwordSender, nameSenderShowed, emailSenderShowed, recipientEmail, smtpServer, proxy, null);
+		this(senderEmail, senderPassword, senderFakeName, senderFakeEmail, recipientEmail, smtpServer, proxy, null);
 	}
 
-	public EmailSender(final String emailSender, //
-			final String passwordSender, //
-			final String nameSenderShowed, //
-			final String emailSenderShowed, //
+	public EmailSender(final String senderEmail, //
+			final String senderPassword, //
+			final String senderFakeName, //
+			final String senderFakeEmail, //
 			final String recipientEmail, //
 			final SMTPServer smtpServer) {
-		this(emailSender, passwordSender, nameSenderShowed, emailSenderShowed, recipientEmail, smtpServer, null, null);
+		this(senderEmail, senderPassword, senderFakeName, senderFakeEmail, recipientEmail, smtpServer, null, null);
 	}
 
 	public final void sendMail(final String subject, final String body, final Image... images) throws MailException {
 
 		final String res = this.proxy == null ? "without proxy" : "with proxy " + this.proxy;
 		final String text1 = "Sending E-mail from {0} to {1} with server {2} {3} ...";
-		final String msg1 = MessageFormat.format(text1, this.emailSender, this.recipientEmail, this.smtpServer, res);
+		final String msg1 = MessageFormat.format(text1, this.senderEmail, this.recipientEmail, this.smtpServer, res);
 		LoggerHelper.logger.info(msg1);
 
 		// Build the E-mail
@@ -109,11 +109,11 @@ public class EmailSender {
 				.withSubject(subject)//
 				.withHTMLText(body);
 
-		if (this.smtpServer.senderEmailShowedMustBeTrust()) { // Impossible to about Email Sender
-			emailBuilder.from(this.nameSenderShowed, this.emailSender);
+		if (this.smtpServer.senderFakeEmailMustBeTrust()) { // Impossible to about Email Sender
+			emailBuilder.from(this.senderFakeName, this.senderEmail);
 
 		} else {
-			emailBuilder.from(this.nameSenderShowed, this.emailSenderShowed);
+			emailBuilder.from(this.senderFakeName, this.senderFakeEmail);
 		}
 
 		for (final Image image : images) {
@@ -127,8 +127,8 @@ public class EmailSender {
 				.withSessionTimeout((int) TimeHelper.MS_PER_MINUTE * 2);
 
 		if (this.smtpServer.auth) {
-			mailerBuilder.withSMTPServerUsername(this.emailSender);
-			mailerBuilder.withSMTPServerPassword(this.passwordSender);
+			mailerBuilder.withSMTPServerUsername(this.senderEmail);
+			mailerBuilder.withSMTPServerPassword(this.senderPassword);
 		}
 
 		if (this.proxy != null) {
@@ -146,7 +146,7 @@ public class EmailSender {
 		mailerBuilder.buildMailer().sendMail(emailBuilder.buildEmail());
 
 		final String text2 = "E-mail from {0} to {1} with server {2} {3} sent !";
-		final String msg2 = MessageFormat.format(text2, this.emailSender, this.recipientEmail, this.smtpServer, res);
+		final String msg2 = MessageFormat.format(text2, this.senderEmail, this.recipientEmail, this.smtpServer, res);
 		LoggerHelper.logger.info(msg2);
 	}
 

@@ -2,8 +2,10 @@ package com.yferhaoui.mail.helper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.IOException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
+import java.util.Properties;
 
 import org.simplejavamail.MailException;
 
@@ -13,18 +15,52 @@ import com.yferhaoui.logger.helper.LoggerHelper;
 
 public final class EmailExceptionSender extends EmailSender {
 
-	private final List<Entry<Long, Exception>> mails = new ArrayList<Entry<Long, Exception>>();
+	public final static EmailExceptionSender getInstance(final SMTPServer smtpServer) {
 
-	public EmailExceptionSender(final String emailSender, //
-			final String passwordSender, //
-			final String nameSenderShowed, //
-			final String emailSenderShowed, //
-			final String recipientEmail, //
-			final SMTPServer smtpServer) {
-		super(emailSender, passwordSender, nameSenderShowed, emailSenderShowed, recipientEmail, smtpServer);
+		if (SENDER == null) {
+
+			try {
+
+				// Load Properties
+				final Properties properties = new Properties();
+				final ClassLoader loader = EmailExceptionSender.class.getClassLoader();
+				properties.load(loader.getResourceAsStream("email.properties"));
+
+				// Get Data
+				final String senderEmail = properties.getProperty("senderEmail");
+				final String senderPassword = properties.getProperty("senderPassword");
+				final String senderFakeName = properties.getProperty("senderFakeName");
+				final String senderFakeEmail = properties.getProperty("senderFakeEmail");
+				final String recipientEmail = properties.getProperty("recipientEmail");
+
+				SENDER = new EmailExceptionSender(senderEmail, //
+						senderPassword, //
+						senderFakeName, senderFakeEmail, recipientEmail, smtpServer);
+
+			} catch (final IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return SENDER;
 	}
 
-	public final void sendError(final Exception e, final float nbHoursToWait, final boolean terminated) throws MailException {
+	private static EmailExceptionSender SENDER;
+
+	// -------------------------------------------------- //
+
+	private final List<Entry<Long, Exception>> mails = new ArrayList<Entry<Long, Exception>>();
+
+	private EmailExceptionSender(final String senderEmail, //
+			final String senderPassword, //
+			final String senderFakeName, //
+			final String senderFakeEmail, //
+			final String recipientEmail, //
+			final SMTPServer smtpServer) {
+		super(senderEmail, senderPassword, senderFakeName, senderFakeEmail, recipientEmail, smtpServer);
+	}
+
+	public final void sendError(final Exception e, final float nbHoursToWait, final boolean terminated)
+			throws MailException {
 
 		this.purge();
 		if (this.getKey(e) == null) {

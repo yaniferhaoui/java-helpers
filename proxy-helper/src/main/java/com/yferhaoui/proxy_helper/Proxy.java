@@ -3,6 +3,8 @@ package com.yferhaoui.proxy_helper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.yferhaoui.basic.helper.TimeHelper;
+
 public final class Proxy implements Comparable<Proxy> {
 
 	private final String proxyID;
@@ -10,8 +12,8 @@ public final class Proxy implements Comparable<Proxy> {
 	private int port;
 	private String company;
 
-	public Proxy(final String proxyID, final String domain, final int port, final String company) {
-		this.proxyID = proxyID;
+	public Proxy(final String domain, final int port, final String company) {
+		this.proxyID = TimeHelper.getValidHexaKey();
 		this.domain = domain;
 		this.port = port;
 		this.company = company;
@@ -19,9 +21,9 @@ public final class Proxy implements Comparable<Proxy> {
 
 	public Proxy(final ResultSet rs) throws SQLException {
 		this.proxyID = rs.getString("proxyID");
-		this.domain = rs.getString("domain");
-		this.port = rs.getInt("port");
-		this.company = rs.getString("company");
+		this.domain = rs.getString("proxyDomain");
+		this.port = rs.getInt("proxyPort");
+		this.company = rs.getString("proxyCompany");
 	}
 
 	// Configuration of the proxy
