@@ -11,7 +11,6 @@ import org.simplejavamail.MailException;
 
 import com.yferhaoui.basic.helper.TimeHelper;
 import com.yferhaoui.basic.helper.ToolHelper;
-import com.yferhaoui.logger.helper.LoggerHelper;
 
 public final class EmailExceptionSender extends EmailSender {
 
@@ -101,7 +100,7 @@ public final class EmailExceptionSender extends EmailSender {
 			this.mails.add(new SimpleEntry<Long, Exception>(time, e));
 
 		} else {
-			LoggerHelper.logger.debug("Email about this Exception already sent in the last {} hours !", nbHoursToWait);
+			EmailSender.LOGGER.debug("Email about this Exception already sent in the last {} hours !", nbHoursToWait);
 		}
 
 	}

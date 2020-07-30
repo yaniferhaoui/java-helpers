@@ -12,7 +12,6 @@ import org.apache.logging.log4j.core.appender.rolling.OnStartupTriggeringPolicy;
 import org.apache.logging.log4j.core.appender.rolling.SizeBasedTriggeringPolicy;
 import org.apache.logging.log4j.core.config.AppenderRef;
 import org.apache.logging.log4j.core.config.Configuration;
-import org.apache.logging.log4j.core.config.DefaultConfiguration;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.apache.logging.log4j.core.layout.PatternMatch;
@@ -31,7 +30,7 @@ public final class LoggerHelper {
 		if (LoggerHelper.appenderProg == null) {
 
 			final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
-			ctx.setConfiguration(new DefaultConfiguration());
+//			ctx.setConfiguration(new DefaultConfiguration());
 
 			final Configuration config = ctx.getConfiguration();
 			for (final Entry<String, Appender> app : config.getAppenders().entrySet()) {
@@ -69,14 +68,14 @@ public final class LoggerHelper {
 				final MyAppender appender = appenders[i];
 				LoggerHelper.appenderProg[i] = RollingFileAppender.newBuilder()//
 						.setConfiguration(config)//
-						.setName("Appender-" + appender.loggerCanonicalName)//
-						.setLayout(layout)//
+						.withName("Appender-" + appender.loggerCanonicalName)//
+						.withLayout(layout)//
 						.withFileName(appender.path)//
 						.withFilePattern(appender.path + "%i")//
 						.withAppend(appender.append)//
 						.withImmediateFlush(true)//
 						.withPolicy(CompositeTriggeringPolicy.createPolicy(//
-								OnStartupTriggeringPolicy.createPolicy(1L), //
+								OnStartupTriggeringPolicy.createPolicy(appender.append ? Long.MAX_VALUE : 1L), //
 								SizeBasedTriggeringPolicy.createPolicy("20000000")))// 20 Mo
 						.withStrategy(DefaultRolloverStrategy.newBuilder()//
 								.withMax(String.valueOf(appender.max))//

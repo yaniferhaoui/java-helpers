@@ -42,6 +42,22 @@ public final class TimeHelper {
 		return null;
 	}
 	
+	public final static String getJustReadableDate(final Long theDate) {
+		if (theDate != null) {
+			return Instant.ofEpochMilli(theDate).atZone(ZONE_ID).toLocalDateTime()
+					.format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
+		}
+		return null;
+	}
+	
+	public final static String getReadableDate(final Long theDate) {
+		if (theDate != null) {
+			return Instant.ofEpochMilli(theDate).atZone(ZONE_ID).toLocalDateTime()
+					.format(DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss"));
+		}
+		return null;
+	}
+	
 	public final static String getCalendarString(final Calendar theDate) {
 		if (theDate != null) {
 			return TimeHelper.getDateString(theDate.getTimeInMillis());
