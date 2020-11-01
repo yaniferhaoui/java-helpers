@@ -66,7 +66,18 @@ public final class ProxyAccount implements Comparable<ProxyAccount> {
 		System.setProperty("java.net.socks.username", this.username);
 		System.setProperty("java.net.socks.password", String.valueOf(this.password));
 		System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
-		System.setProperty("jdk.http.auth.proxying.disabledSchemes", ""); //Do not print this Line ???
+		System.setProperty("jdk.http.auth.proxying.disabledSchemes", ""); // Do not print this Line ???
+	}
+
+	public synchronized final static void clearProxyAccount() {
+		
+		System.clearProperty("http.proxyUser");
+		System.clearProperty("http.proxyPassword");
+		System.clearProperty("https.proxyUser");
+		System.clearProperty("https.proxyPassword");
+		System.clearProperty("java.net.socks.username");
+		System.clearProperty("java.net.socks.password");
+
 	}
 
 	// Setter

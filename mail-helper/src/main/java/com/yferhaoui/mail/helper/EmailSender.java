@@ -1,6 +1,8 @@
 package com.yferhaoui.mail.helper;
 
+import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,7 +18,7 @@ import com.yferhaoui.proxy_helper.Proxy;
 import com.yferhaoui.proxy_helper.ProxyAccount;
 
 public class EmailSender {
-	
+
 	public final static Logger LOGGER = (Logger) LogManager.getLogger(EmailSender.class);
 
 	public enum SMTPServer {
@@ -46,6 +48,34 @@ public class EmailSender {
 		}
 	}
 
+	// -------------------------------------------------- //
+
+	public static EmailSender getInstance(final SMTPServer smtpServer, final String recipientEmail) {
+
+		try {
+
+			// Load Properties
+			final Properties properties = new Properties();
+			final ClassLoader loader = EmailExceptionSender.class.getClassLoader();
+			properties.load(loader.getResourceAsStream("email.properties"));
+
+			// Get Data
+			final String senderEmail = properties.getProperty("senderEmail");
+			final String senderPassword = properties.getProperty("senderPassword");
+			final String senderFakeName = properties.getProperty("senderFakeName");
+			final String senderFakeEmail = properties.getProperty("senderFakeEmail");
+
+			return new EmailSender(senderEmail, //
+					senderPassword, //
+					senderFakeName, senderFakeEmail, recipientEmail, smtpServer);
+
+		} catch (final IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	// -------------------------------------------------- //
+
 	// Sender
 	private final String senderEmail;
 	private final String senderPassword;
@@ -62,7 +92,7 @@ public class EmailSender {
 	private final Proxy proxy;
 	private final ProxyAccount proxyAccount;
 
-	public EmailSender(final String senderEmail, //
+	private EmailSender(final String senderEmail, //
 			final String senderPassword, //
 			final String senderFakeName, //
 			final String senderFakeEmail, //
@@ -81,16 +111,16 @@ public class EmailSender {
 		this.proxyAccount = proxyAccount;
 	}
 
-	public EmailSender(final String senderEmail, //
-			final String senderPassword, //
-			final String senderFakeName, //
-			final String senderFakeEmail, //
-			final String recipientEmail, //
-			final SMTPServer smtpServer, final Proxy proxy) {
-		this(senderEmail, senderPassword, senderFakeName, senderFakeEmail, recipientEmail, smtpServer, proxy, null);
-	}
+//	private EmailSender(final String senderEmail, //
+//			final String senderPassword, //
+//			final String senderFakeName, //
+//			final String senderFakeEmail, //
+//			final String recipientEmail, //
+//			final SMTPServer smtpServer, final Proxy proxy) {
+//		this(senderEmail, senderPassword, senderFakeName, senderFakeEmail, recipientEmail, smtpServer, proxy, null);
+//	}
 
-	public EmailSender(final String senderEmail, //
+	protected EmailSender(final String senderEmail, //
 			final String senderPassword, //
 			final String senderFakeName, //
 			final String senderFakeEmail, //

@@ -38,13 +38,15 @@ public final class Proxy implements Comparable<Proxy> {
 		System.setProperty("socksProxyPort ", String.valueOf(this.port));
 	}
 
-	public synchronized final static void disableProxy() {
-		System.setProperty("http.proxyHost", "");
-		System.setProperty("http.proxyPort", "");
-		System.setProperty("https.proxyHost", "");
-		System.setProperty("https.proxyPort", "");
-		System.setProperty("socksProxyHost", "");
-		System.setProperty("socksProxyPort ", "");
+	public synchronized final static void clearProxy() {
+		
+		System.setProperty("java.net.useSystemProxies", "false");
+		System.clearProperty("http.proxyHost");
+		System.clearProperty("http.proxyPort");
+		System.clearProperty("https.proxyHost");
+		System.clearProperty("https.proxyPort");
+		System.clearProperty("socksProxyHost");
+		System.clearProperty("socksProxyPort");
 	}
 
 	// Setter
