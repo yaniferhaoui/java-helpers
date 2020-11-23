@@ -49,7 +49,7 @@ public final class EmailExceptionSender extends EmailSender {
 
 	private final List<Entry<Long, Exception>> mails = new ArrayList<Entry<Long, Exception>>();
 
-	private EmailExceptionSender(final String senderEmail, //
+	public EmailExceptionSender(final String senderEmail, //
 			final String senderPassword, //
 			final String senderFakeName, //
 			final String senderFakeEmail, //
